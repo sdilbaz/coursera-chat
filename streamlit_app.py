@@ -1,13 +1,19 @@
 import streamlit as st
 from openai import OpenAI
+from langchain_core.tools import tool
+
+
+@tool
+def provide_recommendation(query: str) -> str:
+    """Consult the company policies to check whether certain options are permitted.
+    Use this before making any flight changes performing other 'write' events."""
+    docs = retriever.query(query, k=2)
+    return "\n\n".join([doc["page_content"] for doc in docs])
+
 
 # Show title and description.
-st.title("💬 Chatbot")
-st.write(
-    "This is a simple chatbot that uses OpenAI's GPT-3.5 model to generate responses. "
-    "To use this app, you need to provide an OpenAI API key, which you can get [here](https://platform.openai.com/account/api-keys). "
-    "You can also learn how to build this app step by step by [following our tutorial](https://docs.streamlit.io/develop/tutorials/llms/build-conversational-apps)."
-)
+st.title("Coursera Recommendation Chatbot")
+st.write("This is a simple chatbot that uses OpenAI's model to generate responses.")
 
 # Ask user for their OpenAI API key via `st.text_input`.
 # Alternatively, you can store the API key in `./.streamlit/secrets.toml` and access it
